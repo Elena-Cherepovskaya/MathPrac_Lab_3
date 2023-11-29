@@ -761,6 +761,25 @@ int main(int argc, const char * argv[])
 
     }
     
+    switch (function_result)
+    {
+        case fsc_ok:
+            break;
+        case fsc_overflow:
+            printf("Overflow detected\n");
+            break;
+        case fsc_invalid_parameter:
+            printf("Invalid parameter detected\n");
+            break;
+        case fsc_memory_error_detected:
+            printf("Memory error detected\n");
+            break;
+        case fsc_file_is_not_found:
+            printf("File is not found\n");
+            break;
+        default:
+            break;
+    }
     
     return function_result == fsc_ok ? 0 : 1;
 }
