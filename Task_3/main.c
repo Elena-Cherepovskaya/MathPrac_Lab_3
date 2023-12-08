@@ -275,19 +275,19 @@ int main(int argc, const char * argv[])
         case fsc_ok:
             break;
         case fsc_overflow:
-            printf("Overflow detected\n");
+            printf("Переполненеие\n");
             break;
         case fsc_invalid_parameter:
-            printf("Invalid parameter detected\n");
+            printf("Невальный параметр\n");
             break;
         case fsc_memory_error_detected:
-            printf("Memory error detected\n");
+            printf("Ошибка выделения памяти\n");
             break;
         case fsc_file_is_not_found:
-            printf("File is not found\n");
+            printf("Файл не найден\n");
             break;
         default:
-            printf("function_result is unknown\n");
+            printf("Результат не определен\n");
     }
     
     return res == fsc_ok ? 0 : 1;
