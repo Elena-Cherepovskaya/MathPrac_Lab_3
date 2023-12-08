@@ -23,8 +23,6 @@ enum status_codes
 };
 
 #define BUFFER_SIZE 256
-
-//Эпсилон сделать парметром функции
 #define EPS 0.0001
 
 typedef struct
