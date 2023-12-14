@@ -432,7 +432,6 @@ enum status_codes make_base_data(T_track_list* track_list, T_bus_and_counter_lis
         track_list = track_list->next_track;
     }
     
-    //print_bus_with_count(list);
     return fsc_ok;
 }
 
@@ -601,15 +600,6 @@ enum status_codes bus_with_max_full_stop_time(T_bus_and_counter_list* list, int*
     return fsc_ok;
 }
 
-/*
- typedef struct
- {
-     int bus_num;
-     T_track* begin_track;
-     void* next_track;
- }T_track_list;
- */
-
 enum status_codes clear_track_list(T_track_list** track_list)
 {
     if (*track_list == NULL)
@@ -726,11 +716,6 @@ int main(int argc, const char * argv[])
     }
 
     T_bus_and_counter_list* list = NULL;
-    if (res == fsc_ok)
-    {
-        res = make_base_data(track_list_first, &list);
-        print_bus_with_count(list);
-    }
     
     if (res == fsc_ok)
     {
@@ -835,6 +820,26 @@ int main(int argc, const char * argv[])
     
     if (track_list_first != NULL)
         clear_track_list(&track_list_first);
+    
+    switch (res)
+    {
+        case fsc_ok:
+            break;
+        case fsc_overflow:
+            printf("Обнаружено переполнение\n");
+            break;
+        case fsc_invalid_parameter:
+            printf("Обнаружен невалидный параметр\n");
+            break;
+        case fsc_memory_error_detected:
+            printf("Обнаружена ошибка выделения памяти\n");
+            break;
+        case fsc_file_is_not_found:
+            printf("Файл не найден\n");
+            break;
+        default:
+            break;
+    }
     
     return res == fsc_ok ? 0 : 1;
 }
