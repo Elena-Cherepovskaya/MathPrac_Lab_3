@@ -398,7 +398,6 @@ enum status_codes add_to_bus_and_counter_list(T_bus_and_counter_list** list, int
         (*list)->bus_list[index].min_stop = min_stop;
         (*list)->bus_list[index].max_stop = max_stop;
         (*list)->bus_list[index].full_stop_time = full_stop_time;
-        // todo добавить расчеты
     }
 
     return fsc_ok;
