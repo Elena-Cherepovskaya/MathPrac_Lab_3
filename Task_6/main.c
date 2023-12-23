@@ -351,6 +351,7 @@ enum status_codes add_to_bus_and_counter_list(T_bus_and_counter_list** list, int
         }
     }
     
+    int index = (*list)->len;
     if (!(bus_is_found))
     {
         if ((*list)->len == (*list)->capasity)
@@ -367,38 +368,38 @@ enum status_codes add_to_bus_and_counter_list(T_bus_and_counter_list** list, int
             (*list)->bus_list = tmp_p;
         }
         
-        int index = (*list)->len;
+        index = (*list)->len;
         (*list)->bus_list[index].bus_num = bus_num;
         (*list)->bus_list[index].counter = 1;
         (*list)->len += 1;
-        
-        T_track* current_stop = first_stop_in_track;
-        T_track* next_stop = first_stop_in_track->next_stop;
-        double track_len = 0.0;
-        int min_stop = 86400;
-        int max_stop = 0;
-        int full_stop_time = 0;
-        while(true)
-        {
-            if (next_stop != NULL)
-                track_len += sqrt(pow_2(current_stop->stop.bus_stop->x - next_stop->stop.bus_stop->x) + pow_2(current_stop->stop.bus_stop->y - next_stop->stop.bus_stop->y));
-            
-            min_stop = min(abs(difftime(current_stop->stop.departure_time, current_stop->stop.stopping_time)), min_stop);
-            
-            max_stop = max(abs(difftime(current_stop->stop.departure_time, current_stop->stop.stopping_time)), max_stop);
-            
-            full_stop_time += abs(difftime(current_stop->stop.departure_time, current_stop->stop.stopping_time));
-            current_stop = next_stop;
-            if (current_stop == NULL)
-                break;
-            next_stop = current_stop->next_stop;
-        }
-        
-        (*list)->bus_list[index].track_length = track_len;
-        (*list)->bus_list[index].min_stop = min_stop;
-        (*list)->bus_list[index].max_stop = max_stop;
-        (*list)->bus_list[index].full_stop_time = full_stop_time;
     }
+        
+    T_track* current_stop = first_stop_in_track;
+    T_track* next_stop = first_stop_in_track->next_stop;
+    double track_len = 0.0;
+    int min_stop = 86400;
+    int max_stop = 0;
+    int full_stop_time = 0;
+    while(true)
+    {
+        if (next_stop != NULL)
+            track_len += sqrt(pow_2(current_stop->stop.bus_stop->x - next_stop->stop.bus_stop->x) + pow_2(current_stop->stop.bus_stop->y - next_stop->stop.bus_stop->y));
+        
+        min_stop = min(abs(difftime(current_stop->stop.departure_time, current_stop->stop.stopping_time)), min_stop);
+        
+        max_stop = max(abs(difftime(current_stop->stop.departure_time, current_stop->stop.stopping_time)), max_stop);
+        
+        full_stop_time += abs(difftime(current_stop->stop.departure_time, current_stop->stop.stopping_time));
+        current_stop = next_stop;
+        if (current_stop == NULL)
+            break;
+        next_stop = current_stop->next_stop;
+    }
+    
+    (*list)->bus_list[index].track_length = track_len;
+    (*list)->bus_list[index].min_stop = min_stop;
+    (*list)->bus_list[index].max_stop = max_stop;
+    (*list)->bus_list[index].full_stop_time = full_stop_time;
 
     return fsc_ok;
 }
@@ -715,6 +716,9 @@ int main(int argc, const char * argv[])
     }
 
     T_bus_and_counter_list* list = NULL;
+    res = make_base_data(track_list_first, &list);
+    
+    print_bus_with_count(list);
     
     if (res == fsc_ok)
     {
